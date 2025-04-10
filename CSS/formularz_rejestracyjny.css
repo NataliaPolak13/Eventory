@@ -25,6 +25,8 @@ body {
     background-color: #5B7B7B;
     padding: 20px;
     text-align: center;
+    height: 148px;
+    padding: 0%;
   }
   
   .form-header h2 {
@@ -32,61 +34,67 @@ body {
     background-color: transparent;
     margin: 0;
     font-size: 60px;
-    padding-top: 40px;
+    padding-top: 20px;
   }
   
   .form-content {
-    padding: 30px 40px;
+    padding: 75px 40px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 37px;
     background-color: transparent;
 
   }
   
   .form-row {
     display: flex;
-    gap: 20px;
+    gap: 75px;
     background-color: transparent;
 
+  }
+
+  input {
+    padding-left: 20px;
   }
   
   input[type="text"],
   input[type="email"],
   input[type="password"] {
     flex: 1;
-    padding: 12px 20px;
-    border-radius: 12px;
+    border-radius: 20px;
     border: none;
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2);
     font-style: italic;
-    font-size: 16px;
+    font-size: 36px;
+    width: 474px;
+    height: 73px;
   }
   
   .upload-btn {
     flex: 1;
-    padding: 12px 20px;
-    border-radius: 12px;
+    border-radius: 20px;
     border: 1px solid #666;
     background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-style: italic;
-    font-size: 16px;
+    font-size: 36px;
     cursor: pointer;
   }
   
   .upload-btn span {
     pointer-events: none;
     background-color: transparent;
-
+    color: #474554;
+    opacity: 0.9;
   }
   
   .form-submit {
     text-align: center;
-    margin-top: 20px;
     background-color: transparent;
+    margin-top: 10px;
   }
+
+
   
   
