@@ -21,22 +21,6 @@ body {
     border:  0.5px solid black;
   }
   
-  .form-header {
-    background-color: #5B7B7B;
-    padding: 20px;
-    text-align: center;
-    height: 148px;
-    padding: 0%;
-  }
-  
-  .form-header h2 {
-    color: white;
-    background-color: transparent;
-    margin: 0;
-    font-size: 60px;
-    padding-top: 20px;
-  }
-  
   .form-content {
     padding: 75px 40px;
     display: flex;
@@ -55,6 +39,8 @@ body {
 
   input {
     padding-left: 20px;
+    width: 474px;
+    height: 73px;
   }
   
   input[type="text"],
@@ -66,8 +52,6 @@ body {
     box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2);
     font-style: italic;
     font-size: 36px;
-    width: 474px;
-    height: 73px;
   }
   
   .upload-btn {

@@ -23,3 +23,18 @@ button {
 button:active {
     filter: brightness(85%);
   }
+
+.header {
+    background-color: #5B7B7B;
+    padding: 20px;
+    text-align: center;
+    height: 148px;
+  }
+
+  .header h2 {
+    color: white;
+    background-color: transparent;
+    margin: 0;
+    font-size: 60px;
+    padding-top: 20px;
+  }
