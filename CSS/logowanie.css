@@ -24,24 +24,9 @@ body {
 
   }
   
-  .login-header {
-    background-color: #5B7B7B;
-    padding: 20px;
-    text-align: center;
-    height: 148px;
-  }
-  
-  .login-header h2 {
-    color: white;
-    background-color: transparent;
-    margin: 0;
-    font-size: 60px;
-    padding-top: 40px;
-  }
-  
   .login-form {
     align-items: center;
-    padding-top: 90px;
+    padding-top: 110px;
     background-color: transparent;
 
   }
