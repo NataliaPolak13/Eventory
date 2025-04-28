@@ -1,0 +1,40 @@
+*{
+    background-color: #F4F4F4;
+    font-family: "Monda", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;    
+}
+
+button {
+    background-color: #5B7B7B;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 30px;
+    width: 350px;
+    height: 73px;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.1);
+}
+
+button:active {
+    filter: brightness(85%);
+  }
+
+.header {
+    background-color: #5B7B7B;
+    padding: 20px;
+    text-align: center;
+    height: 148px;
+  }
+
+  .header h2 {
+    color: white;
+    background-color: transparent;
+    margin: 0;
+    font-size: 60px;
+    padding-top: 20px;
+  }
