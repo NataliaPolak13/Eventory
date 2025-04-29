@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-// Importuj swoje komponenty
 import Login from '../components/logowanie.vue';
 import ForgotPassword from '../components/reset_hasła.vue';
-import Register from '../components/formularz_rejestracyjny.vue';
+import Register from '../components/rejestracja.vue';
 
-// Tworzymy router i konfigurujemy ścieżki
 const routes = [
   {
     path: '/logowanie',
@@ -18,11 +16,11 @@ const routes = [
     component: ForgotPassword
   },
   {
-    path: '/formularz_rejstracyjny',
+    path: '/rejestracja',
     name: 'Rejestracja',
     component: Register
+  }
 
-}
 ];
 
 const router = createRouter({
