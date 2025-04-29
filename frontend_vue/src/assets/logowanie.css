@@ -55,6 +55,7 @@ body {
     font-size: 25px;
     font-style: italic;
     background-color: transparent;
+    box-shadow: none;
   }
   
   .login-footer {

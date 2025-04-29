@@ -7,7 +7,7 @@
       <div class="login-form">
         <div style="margin-bottom: 30px" class="input-group">
           <span class="icon">📧</span>
-          <input v-model="email" type="email" placeholder="Email" />
+          <input v-model="email" type="email" placeholder="Email" required/>
         </div>
         <div class="input-group">
           <span class="icon">🔒</span>
