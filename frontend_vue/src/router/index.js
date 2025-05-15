@@ -19,6 +19,11 @@ const routes = [
     path: '/rejestracja',
     name: 'Rejestracja',
     component: Register
+  },
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('../components/Home.vue')
   }
 
 ];

@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="login-footer">
-        <button @click="handleSubmit">Zaloguj się</button>
+        <button class="button1" @click="handleSubmit">Zaloguj się</button>
         <router-link to="/reset_hasła">Zapomniałeś hasła?</router-link>
       </div>
     </div>

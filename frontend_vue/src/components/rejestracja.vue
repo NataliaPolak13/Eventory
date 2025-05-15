@@ -21,7 +21,7 @@
           </label>
         </div>
         <div class="form-submit">
-          <button type="submit">Zarejestruj się</button>
+          <button class="button1" type="submit">Zarejestruj się</button>
         </div>
       </form>
     </div>
