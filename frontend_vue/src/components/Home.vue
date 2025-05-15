@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="image-holder">
-                            <img src="../assets/zdj2.jpg" alt="Eventory" class="home-image fade-in-img" />                
+                            <img src="../assets/zdj4.jpg" alt="Eventory" class="home-image fade-in-img" />                
                         </div>
                     </section>
                 </li>
