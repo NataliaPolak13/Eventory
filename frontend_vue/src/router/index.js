@@ -24,6 +24,16 @@ const routes = [
     path: '/',
     name: 'Home',
     component: () => import('../components/Home.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('../components/dashboard/dashboard.vue')
+  },
+  {
+    path: '/confirmEmail',
+    name: 'confirmEmail',
+    component: () => import('../components/confirmEmail.vue')
   }
 
 ];

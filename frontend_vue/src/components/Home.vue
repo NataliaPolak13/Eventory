@@ -1,20 +1,5 @@
 <template>
-    <div class="wrapper">
-        <header class="headerHome">
-            <div class="logo">Eventory</div>
-            <nav>
-                <ul>
-                    <li><router-link to="/">Home</router-link></li>
-                    <li><router-link to="/about">O nas</router-link></li>
-                    <li><router-link to="/contact">Kontakt</router-link></li>
-                </ul>
-            </nav>
-            <div class="user-actions">
-                <router-link to="/rejestracja"><button class="home-button">Zarejestruj się</button></router-link>
-                <router-link to="/logowanie"><button class="home-button">Zaloguj się</button></router-link>
-            </div>
-        </header>
-
+    <div class="wrapper">    
         <main class="main-content">
             <ul class="slider">
                 <li class="slider-item active">
@@ -87,11 +72,7 @@
                         </button>
                     </a>
                 </div>
-        </main>
-
-        <footer class="footer">
-            <p>&copy; Eventory 2025</p>
-        </footer>
+        </main>        
     </div>
 </template>
 
