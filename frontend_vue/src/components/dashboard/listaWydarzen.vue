@@ -1,12 +1,22 @@
 <template>
-    <div class="dashboard-container">
-        <NavBarComponent />
-        <div class="dashboard-main borderBox">
-          <h1>Witaj w Dashboard</h1>
-          
-        </div>
+  <div class="dashboard-container">
+    <NavBarComponent />
+    <div class="dashboard-main borderBox">
+      <h2>Lista wydarzeń</h2>
+      <ul v-if="events.length > 0" class="event-list">
+        <li v-for="event in events" :key="event.id" class="event-item">
+          <h3 class="event-name">{{ event.name }}</h3>
+          <p><strong>Lokalizacja:</strong> {{ event.location }}, {{ event.locationDetails }}</p>
+          <p><strong>Opis:</strong> {{ event.description }}</p>
+          <p><strong>Data:</strong> {{ formatDate(event.startDate) }} - {{ formatDate(event.endDate) }}</p>
+          <div class="event-actions">
+            <button @click="goToEvent(event.id)">Więcej</button>
+          </div>
+        </li>
+      </ul>
+      <p v-else>Brak wydarzeń</p>
     </div>
-    
+  </div>
 </template>
 
 <script>
@@ -33,7 +43,7 @@ export default {
 
     const goToEvent = (eventId) => {
       // nawigacja do podstrony wydarzenia
-      router.push(`/events/${eventId}`)
+      router.push(`event/${eventId}`)
     }
 
     onMounted(async () => {
@@ -93,7 +103,6 @@ export default {
         localStorage.setItem('accessToken', tokenData.access)
       }
 
-      // ✅ Pobierz wydarzenia
       const eventsRes = await fetch(import.meta.env.VITE_API_URL + '/events/', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`

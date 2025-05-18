@@ -95,7 +95,7 @@ export default {
         localStorage.setItem('accessToken', tokenData.access)
       }
 
-      // Możesz tu teraz pobrać dane użytkownika lub inne zasoby
+      
     })
   }
 }

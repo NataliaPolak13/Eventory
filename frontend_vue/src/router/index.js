@@ -34,7 +34,28 @@ const routes = [
     path: '/confirmEmail',
     name: 'confirmEmail',
     component: () => import('../components/confirmEmail.vue')
+  },
+  {
+    path: '/dashboard/eventList',
+    name: 'listaWydarzen',
+    component: () => import('../components/dashboard/listaWydarzen.vue')
+  },
+  {
+  path: '/dashboard/event/:id',
+  name: 'EventDetails',
+  component: () => import('../components/dashboard/EventDetails.vue')
+  },
+  {
+  path: '/dashboard/myEvents',
+  name: 'MyEvents',
+  component: () => import('../components/dashboard/MyEvents.vue')
+  },
+  {
+  path: '/dashboard/createEvent',
+  name: 'CreateEvent',
+  component: () => import('../components/dashboard/CreateEvent.vue')
   }
+
 
 ];
 
