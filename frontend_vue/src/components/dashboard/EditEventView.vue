@@ -29,7 +29,7 @@
         <label>Widoczność do</label>
         <input v-model="event.visibilityEndDate" type="datetime-local" class="smallBorderBox" required />
 
-        <button type="submit" class="smallButton">Zapisz zmiany</button>
+        <button type="submit" class="smallButton" style="margin-left: 20px;">Zapisz zmiany</button>
       </form>
 
       <hr />
@@ -37,7 +37,7 @@
       <div>
         <h3>Usuń wydarzenie</h3>
         <input v-model="deleteReason" type="text" placeholder="Powód usunięcia" class="smallBorderBox" />
-        <button @click="deleteEvent" class="dangerButton">Usuń wydarzenie</button>
+        <button @click="deleteEvent" style="margin-left: 20px;" class="dangerButton">Usuń wydarzenie</button>
       </div>
     </div>
   </div>
