@@ -58,7 +58,7 @@ Po uruchomieniu frontendowej aplikacji, odwiedź stronę:
 
 * Domyślnie aplikacja komunikuje się z API przy użyciu zmiennej środowiskowej `VITE_API_URL`.
 * Upewnij się, że API i frontend działają jednocześnie.
-* Konto użytkownika można założyć poprzez endpoint API lub interfejs, jeśli został zaimplementowany.
+* Konto użytkownika domyślnego do testowania to  L: admin@example.com H: DefaultPassword123*
 
 ---
 
