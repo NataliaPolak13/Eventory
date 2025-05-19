@@ -1,5 +1,3 @@
-Oczywiście! Oto cały plik w formacie Markdown – możesz bezpośrednio wkleić go do pliku `README.md` w swoim repozytorium:
-
 # Frontend dla Eventory API
 
 Ten projekt to frontendowa aplikacja dla [Eventory API](https://github.com/kajahl/eventory-api.git) zbudowana w Vue.js.
