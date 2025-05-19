@@ -1,22 +1,21 @@
 <template>
   <nav class="dashboard-nav borderBox">
-    <ul class="nav-ul">
-      <li class="nav-item smallBorderBox">
-        <router-link to="/dashboard" class="nav-link">Home</router-link>
-      </li>
-      <li class="nav-item smallBorderBox">
-        <router-link to="/dashboard/eventList" class="nav-link">Lista Wydarzeń</router-link>
-      </li>
-      <li class="nav-item smallBorderBox">
-        <router-link to="/dashboard/myEvents" class="nav-link">Twoje Wydarzenia</router-link>
-      </li>
-      <li class="nav-item smallBorderBox">
-        <router-link to="/dashboard/about" class="nav-link">O mnie</router-link>
-      </li>
-    </ul>
+    <div class="nav-buttons">
+      <router-link to="/dashboard">
+        <button class="nav-item smallBorderBox">Home</button>
+      </router-link>
+      <router-link to="/dashboard/eventList">
+        <button class="nav-item smallBorderBox">Lista Wydarzeń</button>
+      </router-link>
+      <router-link to="/dashboard/myEvents">
+        <button class="nav-item smallBorderBox">Twoje Wydarzenia</button>
+      </router-link>
+      <router-link to="/dashboard/userProfile">
+        <button class="nav-item smallBorderBox">O mnie</button>
+      </router-link>
+    </div>
   </nav>
 </template>
-
 
 <script>
 export default {

@@ -2,14 +2,19 @@
   <div class="dashboard-container">
     <NavBarComponent />
     <div class="dashboard-main borderBox">
-        <h2>Utwórz nowe wydarzenie</h2>
-         <div class="event-actions">
-            <router-link to="/dashboard/createEvent"><button>Utwórz nowe</button></router-link>
-          </div>
+      <h2>Utwórz nowe wydarzenie</h2>
+      <div class="event-actions">
+        <router-link to="/dashboard/createEvent"><button>Utwórz nowe</button></router-link>
+      </div>
 
       <h2>Twoje wydarzenia</h2>
       <ul v-if="events.length > 0" class="event-list">
-        <li v-for="event in events" :key="event.id" class="event-item">
+        <li
+          v-for="event in events"
+          :key="event.id"
+          class="event-item"
+          :class="getStatusClass(event)"
+        >
           <div class="event-name">{{ event.name }}</div>
           <div class="event-status">Status: {{ getStatus(event) }}</div>
           <div class="event-actions">
@@ -45,7 +50,11 @@ export default {
 
         if (!res.ok) throw new Error('Błąd podczas pobierania wydarzeń użytkownika')
         const data = await res.json()
-        events.value = data
+
+        const now = new Date()
+        events.value = data.sort((a, b) => {
+          return getStatusValue(a, now) - getStatusValue(b, now)
+        })
       } catch (error) {
         console.error(error)
       }
@@ -56,9 +65,25 @@ export default {
       const start = new Date(event.startDate)
       const end = new Date(event.endDate)
 
-      if (now < start) return 'Nadchodzące'
       if (now >= start && now <= end) return 'W trakcie'
+      if (now < start) return 'Nadchodzące'
       return 'Zakończone'
+    }
+
+    const getStatusValue = (event, now = new Date()) => {
+      const start = new Date(event.startDate)
+      const end = new Date(event.endDate)
+
+      if (now >= start && now <= end) return 1 // W trakcie
+      if (now < start) return 2                // Nadchodzące
+      return 3                                 // Zakończone
+    }
+
+    const getStatusClass = (event) => {
+      const status = getStatus(event)
+      if (status === 'W trakcie') return 'event-ongoing'
+      if (status === 'Nadchodzące') return 'event-upcoming'
+      return 'event-finished'
     }
 
     const goToPreview = (id) => router.push(`/dashboard/event/${id}`)
@@ -89,6 +114,8 @@ export default {
     return {
       events,
       getStatus,
+      getStatusValue,
+      getStatusClass,
       goToPreview,
       goToEdit
     }
@@ -97,5 +124,55 @@ export default {
 </script>
 
 <style scoped>
+.event-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.event-item {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.event-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.event-status {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+/* Kolory statusów */
+.event-ongoing {
+  background-color: #d4f4d1;
+  color: #1c662f;
+}
+
+.event-upcoming {
+  background-color: #f8f8f8;
+  color: #000000;
+}
+
+.event-finished {
+  background-color: #e0e0e0;
+  color: #666666;
+}
+
+.event-actions button {
+  margin-right: 0.5rem;
+}
+
+.event-name,
+.event-status,
+.event-actions {
+  background: transparent;
+
+}
 
 </style>

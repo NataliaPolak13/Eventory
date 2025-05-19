@@ -29,20 +29,33 @@ import emitter from '../eventBus'
 export default {
   name: 'HeaderComponent',
   setup() {
-    const isLoggedIn = ref(!!localStorage.getItem('accessToken'))
+    const isLoggedIn = ref(false)
     const router = useRouter()
+
+    const checkLoginStatus = async () => {
+      const token = localStorage.getItem('accessToken')
+      if (!token) {
+        isLoggedIn.value = false
+        return
+      }
+
+      try {
+        const res = await fetch(import.meta.env.VITE_API_URL + '/auth/me', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        isLoggedIn.value = res.ok
+      } catch (err) {
+        console.error('Błąd sprawdzania sesji:', err)
+        isLoggedIn.value = false
+      }
+    }
 
     const updateLoginStatus = (status) => {
       isLoggedIn.value = status
     }
-
-    onMounted(() => {
-      emitter.on('auth-change', updateLoginStatus)
-    })
-
-    onUnmounted(() => {
-      emitter.off('auth-change', updateLoginStatus)
-    })
 
     const logout = () => {
       localStorage.removeItem('accessToken')
@@ -51,6 +64,15 @@ export default {
       emitter.emit('auth-change', false)
       router.push('/')
     }
+
+    onMounted(() => {
+      checkLoginStatus()
+      emitter.on('auth-change', updateLoginStatus)
+    })
+
+    onUnmounted(() => {
+      emitter.off('auth-change', updateLoginStatus)
+    })
 
     return {
       isLoggedIn,
@@ -72,5 +94,4 @@ export default {
   cursor: pointer;
   border-radius: 4px;
 }
-
 </style>

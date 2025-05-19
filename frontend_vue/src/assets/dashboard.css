@@ -1,6 +1,8 @@
 :root {
   --nav-color-option: #c9c9c9;
   --nav-background-color: #c5c5c5;
+  --small-button-color: #2563eb;
+  --background-color: #ccc:
 
 }
 
@@ -31,7 +33,7 @@
 .nav-item {
   padding: 0;
   margin-bottom: 8px;
-  background-color: var(--nav-background-color);
+  background-color: var(--nav-color-option);
   transition: filter 0.3s;
 }
 
@@ -61,21 +63,20 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-.nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.nav-buttons{
+  background-color: var(--nav-color-option);
 }
 
 .nav-item {
-  color: #5B7B7B;
+  color: #f3f3f3;
   padding: 12px 16px;
   margin-bottom: 8px;
   border-left: 3px solid transparent;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #5B7B7B;
+  background-color: #216464;
+  width: 100%;
 }
 
 .nav-item:hover {
@@ -120,18 +121,18 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   min-width: 200px;
-  text-align: center;
+  text-align: left;
 }
 
 .card h2 {
-  font-size: 1.2rem;
+  font-size: 2rem;
   margin-bottom: 0.5rem;
 }
 
 .card p {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: bold;
-  color: #2563eb;
+  color: #001b57;
 }
 
 /* EVENT LIST */
@@ -145,7 +146,7 @@
   border: 1px solid #ddd;
   margin-bottom: 1rem;
   border-radius: 8px;
-  background-color: #f8f8f8;
+  /* background-color: #f8f8f8; */
 }
 .event-name {
   font-size: 1.2rem;
@@ -158,15 +159,32 @@
   display: flex;
   gap: 1rem;
 }
-.event-actions button {
+.event-actions button, .smallButton {
   padding: 0.5rem 1rem;
   cursor: pointer;
-  background-color: #2563eb;
+  background-color: var(--small-button-color);
   color: white;
   border: none;
   border-radius: 6px;
   transition: background-color 0.3s ease;
 }
-.event-actions button:hover {
+.event-actions button:hover, .smallButton {
   background-color: #1e40af;
+}
+
+/* SEACH BAR */
+
+.search-bar {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.search-bar button {
+  padding: 0.5rem 1rem;
 }

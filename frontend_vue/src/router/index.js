@@ -54,7 +54,18 @@ const routes = [
   path: '/dashboard/createEvent',
   name: 'CreateEvent',
   component: () => import('../components/dashboard/CreateEvent.vue')
+  },
+  {
+  path: '/dashboard/userProfile',
+  name: 'userProfile',
+  component: () => import('../components/dashboard/UserProfile.vue')
+  },
+  {
+  path: '/dashboard/editEvent/:id',
+  name: 'EditEventView',
+  component: () => import('../components/dashboard/EditEventView.vue')
   }
+
 
 
 ];
