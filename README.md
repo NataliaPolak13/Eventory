@@ -23,6 +23,7 @@ docker-compose -f docker-compose.full.yml up --build
 
 
 ---
+```
 
 ### 2. Frontend – Vue.js
 
