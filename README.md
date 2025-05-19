@@ -1,6 +1,5 @@
 Oczywiście! Oto cały plik w formacie Markdown – możesz bezpośrednio wkleić go do pliku `README.md` w swoim repozytorium:
 
-````markdown
 # Frontend dla Eventory API
 
 Ten projekt to frontendowa aplikacja dla [Eventory API](https://github.com/kajahl/eventory-api.git) zbudowana w Vue.js.
@@ -23,7 +22,7 @@ Najpierw uruchom backend przy pomocy Dockera:
 git clone https://github.com/kajahl/eventory-api.git
 cd eventory-api
 docker-compose -f docker-compose.full.yml up --build
-````
+
 
 ---
 
