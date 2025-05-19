@@ -74,6 +74,7 @@ Po uruchomieniu frontendowej aplikacji, odwiedź stronę:
 ## 🧑‍💻 Autorzy
 
 * Frontend: [NataliaPolak13](https://github.com/NataliaPolak13)
+* Frontend: [Konradiks](https://github.com/Konradiks)
 * Backend: [kajahl](https://github.com/kajahl)
 
 ```
