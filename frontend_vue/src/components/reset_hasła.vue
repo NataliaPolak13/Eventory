@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="button-container">
-        <button @click="resetPassword" type="submit">Resetuj</button>
+        <button class="button1" @click="resetPassword" type="submit">Resetuj</button>
       </div>
     </div>
   </div>

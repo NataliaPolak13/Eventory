@@ -6,22 +6,22 @@
       </div>
       <form @submit.prevent="handleSubmit" class="form-content">
         <div class="form-row">
-          <input v-model="firstName" type="text" placeholder="Imię *" required />
-          <input v-model="password" type="password" placeholder="Hasło *" required />
+          <input class="regInput" v-model="firstName" type="text" placeholder="Imię *" required />
+          <input class="regInput" v-model="password" type="password" placeholder="Hasło *" required />
         </div>
         <div class="form-row">
-          <input v-model="lastName" type="text" placeholder="Nazwisko *" required />
-          <input v-model="confirmPassword" type="password" placeholder="Powtórz hasło *" required />
+          <input class="regInput" v-model="lastName" type="text" placeholder="Nazwisko *" required />
+          <input class="regInput" v-model="confirmPassword" type="password" placeholder="Powtórz hasło *" required />
         </div>
         <div class="form-row">
-          <input v-model="email" type="email" placeholder="Email *" required />
+          <input class="regInput" v-model="email" type="email" placeholder="Email *" required />
           <label class="upload-btn">
             <span>📷 Załaduj zdjęcie profilowe</span>
-            <input type="file" @change="handleFileUpload" hidden />
+            <input class="regInput" type="file" @change="handleFileUpload" hidden />
           </label>
         </div>
         <div class="form-submit">
-          <button type="submit">Zarejestruj się</button>
+          <button class="button1" type="submit">Zarejestruj się</button>
         </div>
       </form>
     </div>
@@ -37,26 +37,56 @@ export default {
       email: "",
       password: "",
       confirmPassword: "",
-      profileImage: null
+      profileImage: null,
     };
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       if (this.password !== this.confirmPassword) {
         alert("Hasła nie pasują do siebie!");
         return;
       }
 
-      console.log("Rejestracja:", {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-        password: this.password,
-        profileImage: this.profileImage
-      });
+      const adres = import.meta.env.VITE_API_URL;
 
-      alert("Rejestracja zakończona sukcesem!");
+      // Tworzymy payload zgodny z wymaganiami backendu
+      const payload = {
+        username: this.email.split('@')[0], // np. wyciągamy nazwę z maila
+        firstname: this.firstName,
+        lastname: this.lastName,
+        email: this.email,
+        confirm_email: this.email,
+        password: this.password,
+        confirm_password: this.confirmPassword
+      };
+
+      try {
+        const response = await fetch(`${adres}/users/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          // Spróbuj odebrać błąd z backendu
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Błąd podczas rejestracji.");
+        }
+
+        const result = await response.json();
+        console.log("Odpowiedź z serwera:", result);
+        alert("Rejestracja zakończona sukcesem! Potwierdź email.");
+        localStorage.setItem("email", this.email);
+        this.$router.push('/confirmEmail');
+      } catch (error) {
+        console.error(error);
+        console.log(error);
+        //alert("Nie udało się zarejestrować: " + error.message);
+      }
     },
+
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {

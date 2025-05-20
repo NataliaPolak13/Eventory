@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="login-footer">
-        <button @click="handleSubmit">Zaloguj się</button>
+        <button class="button1" @click="handleSubmit">Zaloguj się</button>
         <router-link to="/reset_hasła">Zapomniałeś hasła?</router-link>
       </div>
     </div>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import emitter from '../eventBus'
 export default {
   data() {
     return {
@@ -31,10 +32,48 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      // Możesz tu dodać logikę logowania
-      console.log("Email:", this.email);
-      console.log("Hasło:", this.password);
+    async handleSubmit() {
+      const apiUrl = import.meta.env.VITE_API_URL + '/auth/login';
+      
+
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password
+          })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error("Błąd logowania:", error);
+          alert("Nieprawidłowy login lub hasło");
+          return;
+        }
+
+        const data = await response.json();
+
+        console.log("Zalogowano pomyślnie:", data);
+
+        // Zapisz dane do localStorage
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        emitter.emit('auth-change', true)
+
+
+        // Przekierowanie do dashboard
+        this.$router.push("/dashboard");
+
+      } catch (err) {
+        console.error("Błąd połączenia z API:", err);
+        alert("Wystąpił błąd połączenia z serwerem");
+      }
     }
   }
 };

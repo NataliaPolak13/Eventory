@@ -37,15 +37,15 @@ body {
 
   }
 
-  input {
+  .regInput {
     padding-left: 20px;
     width: 474px;
     height: 73px;
   }
   
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
+  .regInput[type="text"],
+  .regInput[type="email"],
+  .regInput[type="password"] {
     flex: 1;
     border-radius: 20px;
     border: none;

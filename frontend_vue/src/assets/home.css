@@ -1,0 +1,259 @@
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    
+}
+
+body {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: #F4F4F4;
+    background: linear-gradient(to bottom right, #ffffff, #f0f0f0);
+  transition: background 1s ease-in-out;
+}
+
+
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+.home-image {
+    border-radius: 16px;
+    height: 20em;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.5s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  }
+}
+
+.info{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    &.actice{
+
+    }
+}
+
+.left-side {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: left;
+    padding: 20px;
+}
+
+.left-side h1 {
+    font-weight: bold;
+    font-size: 2.5em;
+    color: #5B7B7B;
+    margin-bottom: 20px;
+}
+
+.right-side {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: left;
+    padding: 20px;
+}
+
+.controls {
+    height: 20%;
+    /* position: relative; */
+    z-index: 1;
+    display: flex;
+    gap: 10vw;
+    margin-top: 20px;
+    /* justify-content: flex-end; */
+    padding: 0.25rem 0 0.25rem 0;
+    .previous {
+      border: 1px solid $black;
+    }
+    .next {
+      border-top: 1px solid $black;
+      border-right: 1px solid $black;
+      border-bottom: 1px solid $black;
+    }
+    .icon {
+      position: relative;
+      margin: auto;
+      width: 20px;
+      height: 1px;
+      background-color: currentColor;
+      &.arrow-left {
+        &::before {
+          content: '';
+          position: absolute;
+          left: 1px;
+          top: -4px;
+          width: 9px;
+          height: 9px;
+          border-top: solid 1px currentColor;
+          border-right: solid 1px currentColor;
+          transform: rotate(-135deg);
+        }
+      }
+      &.arrow-right {
+        &::before {
+          content: '';
+          position: absolute;
+          right: 1px;
+          top: -4px;
+          width: 9px;
+          height: 9px;
+          border-top: solid 1px currentColor;
+          border-right: solid 1px currentColor;
+          transform: rotate(45deg);
+        }
+      }
+    }
+  }
+
+  .previous, .next {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-basis: 15%;
+    font-size: 2rem;
+
+    font: inherit;
+    font-size: inherit;
+    width: 55px;
+    height: 55px;
+
+    color: $black;
+    &:hover .icon {
+      transform: scale(1.5);
+    }
+    .icon {
+      transition: transform 0.1s ease;
+    }
+    
+  }
+
+  .visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+
+  .slider-item {
+    display: none;
+    &.active {
+      display: block;
+      .hide-mobile {
+        display: none;
+      }
+      .show-mobile {
+        display: block;
+        margin: 1rem 0;
+      }
+    }
+  }
+
+  .slider {
+    height: 100%;
+  }
+
+
+
+/* ############# */
+/* .image-holder {
+    position: relative;
+    overflow: hidden;
+  
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      transform-origin: 100% 50%;
+      animation: revealRight 1s ease-out forwards;
+    }
+  } */
+
+  .fade-in-img {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInImage 1s ease-out forwards;
+    animation-delay: 0.1s;
+  }
+  
+  @keyframes fadeInImage {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  
+  @keyframes revealRight {
+    0% {
+      transform: scaleX(1);
+    }
+    100% {
+      transform: scaleX(0);
+    }
+  }
+
+  .fade-in-text {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+/*
+inspiration
+https://dribbble.com/shots/4684682-Aquatic-Animals
+*/
+
+
+.stdInput {
+    margin: 10px;
+    font-size: 12px;
+}
+
+.stdInput::placeholder {
+    font-size: 0.6em;
+
+}
