@@ -78,7 +78,3 @@ Po uruchomieniu frontendowej aplikacji, odwiedź stronę:
 * Frontend: [Konradiks](https://github.com/Konradiks)
 * Backend: [kajahl](https://github.com/kajahl)
 
-```
-
-W razie potrzeby mogę też pomóc stworzyć wersję po angielsku albo dodać do pliku badge’y, logo, zrzuty ekranu itp.
-```
