@@ -16,7 +16,10 @@
           :class="getStatusClass(event)"
         >
           <div class="event-name">{{ event.name }}</div>
-          <div class="event-status">Status: {{ getStatus(event) }}</div>
+          <div class="event-status">Status: <br>{{ getStatus(event) }}</div>
+          <div class="event-joinability">
+            Możliwość dołączenia: <br>{{ joinability[event.id] ?? '...' }}
+          </div>
           <div class="event-actions">
             <button @click="goToPreview(event.id)">Podgląd</button>
             <button @click="goToEdit(event.id)">Edytuj</button>
@@ -24,6 +27,27 @@
         </li>
       </ul>
       <p v-else>Brak wydarzeń</p>
+
+      <h2>Wydarzenia, w których jesteś uczestnikiem</h2>
+        <ul v-if="joinedEvents.length > 0" class="event-list">
+          <li
+            v-for="event in joinedEvents"
+            :key="event.id"
+            class="event-item"
+            :class="getStatusClass(event)"
+          >
+            <div class="event-name">{{ event.name }}</div>
+            <div class="event-status">Status: <br>{{ getStatus(event) }}</div>
+            <div class="event-joinability">
+              Możliwość dołączenia: <br>{{ joinability[event.id] ?? '...' }}
+            </div>
+            <div class="event-actions">
+              <button @click="goToPreview(event.id)">Podgląd</button>
+            </div>
+          </li>
+        </ul>
+        <p v-else>Brak wydarzeń, w których uczestniczysz</p>
+
     </div>
   </div>
 </template>
@@ -39,24 +63,98 @@ export default {
   setup() {
     const router = useRouter()
     const events = ref([])
+    const joinedEvents = ref([])
+    const joinability = ref({})
 
     const fetchMyEvents = async (token) => {
       try {
         const res = await fetch(import.meta.env.VITE_API_URL + '/events/me/', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` }
         })
-
         if (!res.ok) throw new Error('Błąd podczas pobierania wydarzeń użytkownika')
         const data = await res.json()
-
         const now = new Date()
-        events.value = data.sort((a, b) => {
-          return getStatusValue(a, now) - getStatusValue(b, now)
-        })
+        events.value = data.sort((a, b) => getStatusValue(a, now) - getStatusValue(b, now))
+        for (const event of data) {
+          checkJoinability(token, event.id)
+        }
       } catch (error) {
         console.error(error)
+      }
+    }
+
+    const fetchJoinedEvents = async (token) => {
+      try {
+        const res = await fetch(import.meta.env.VITE_API_URL + '/events/joined', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (!res.ok) throw new Error('Błąd przy pobieraniu joined events')
+        const joinedData = await res.json()
+
+        const fetchedEvents = []
+
+        for (const item of joinedData) {
+          const strategyId = item.strategy.id
+
+          try {
+            const strategyRes = await fetch(`${import.meta.env.VITE_API_URL}/events/participate/strategy/open/${strategyId}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+
+            if (!strategyRes.ok) {
+              console.warn(`Nie udało się pobrać strategii o ID ${strategyId}`)
+              continue
+            }
+
+            const strategy = await strategyRes.json()
+            const event = strategy.event
+            if (event) {
+              fetchedEvents.push(event)
+              checkJoinability(token, event.id)
+            }
+          } catch (strategyError) {
+            console.error('Błąd przy pobieraniu strategii:', strategyError)
+          }
+        }
+
+        const now = new Date()
+        joinedEvents.value = fetchedEvents.sort((a, b) => getStatusValue(a, now) - getStatusValue(b, now))
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    const checkJoinability = async (token, eventId) => {
+      try {
+        const res1 = await fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}/participants`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (!res1.ok) throw new Error(`Błąd przy pobieraniu participants: ${res1.status}`)
+        const participantsData = await res1.json()
+        const openStrategy = participantsData.find(s => s.strategyType === 'open')
+
+        if (!openStrategy || openStrategy.list.length === 0) {
+          joinability.value[eventId] = 'Zamknięte'
+          return
+        }
+
+        const strategyId = openStrategy.list[0].strategyId
+        const res2 = await fetch(`${import.meta.env.VITE_API_URL}/events/participate/strategy/open/${strategyId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+
+        if (res2.status === 404 || !res2.ok) {
+          joinability.value[eventId] = 'Zamknięte'
+          return
+        }
+
+        const strategy = await res2.json()
+        const isJoinable = strategy.isDeleted === false && strategy.isOngoing === true
+        joinability.value[eventId] = isJoinable ? 'Otwarte' : 'Zamknięte'
+      } catch (e) {
+        console.error('Błąd przy sprawdzaniu możliwości dołączenia:', e)
+        joinability.value[eventId] = 'Zamknięte'
       }
     }
 
@@ -64,7 +162,6 @@ export default {
       const now = new Date()
       const start = new Date(event.startDate)
       const end = new Date(event.endDate)
-
       if (now >= start && now <= end) return 'W trakcie'
       if (now < start) return 'Nadchodzące'
       return 'Zakończone'
@@ -73,10 +170,9 @@ export default {
     const getStatusValue = (event, now = new Date()) => {
       const start = new Date(event.startDate)
       const end = new Date(event.endDate)
-
-      if (now >= start && now <= end) return 1 // W trakcie
-      if (now < start) return 2                // Nadchodzące
-      return 3                                 // Zakończone
+      if (now >= start && now <= end) return 1
+      if (now < start) return 2
+      return 3
     }
 
     const getStatusClass = (event) => {
@@ -88,36 +184,34 @@ export default {
 
     const goToPreview = (id) => router.push(`/dashboard/event/${id}`)
     const goToEdit = (id) => router.push(`/dashboard/editEvent/${id}`)
+    const goToEventFromStrategy = (strategyId) => router.push(`/dashboard/event/strategy/${strategyId}`)
 
     onMounted(async () => {
       const accessToken = localStorage.getItem('accessToken')
-      if (!accessToken) {
-        router.push('/logowanie')
-        return
-      }
+      if (!accessToken) return router.push('/logowanie')
 
       const verifyRes = await fetch(import.meta.env.VITE_API_URL + '/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'access', token: accessToken })
       })
-
       const verifyData = await verifyRes.json()
-      if (!verifyData.isValid) {
-        router.push('/logowanie')
-        return
-      }
+      if (!verifyData.isValid) return router.push('/logowanie')
 
       await fetchMyEvents(accessToken)
+      await fetchJoinedEvents(accessToken)
     })
 
     return {
       events,
+      joinedEvents,
       getStatus,
       getStatusValue,
       getStatusClass,
+      joinability,
       goToPreview,
-      goToEdit
+      goToEdit,
+      goToEventFromStrategy
     }
   }
 }
@@ -143,7 +237,8 @@ export default {
   margin-bottom: 0.5rem;
 }
 
-.event-status {
+.event-status,
+.event-joinability {
   font-style: italic;
   margin-bottom: 0.5rem;
 }
@@ -170,9 +265,8 @@ export default {
 
 .event-name,
 .event-status,
+.event-joinability,
 .event-actions {
   background: transparent;
-
 }
-
 </style>

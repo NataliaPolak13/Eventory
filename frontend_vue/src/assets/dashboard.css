@@ -13,7 +13,7 @@
     flex: 1;
   padding: 2rem;
   width: 85vw;
-  min-height: 40vh;
+  min-height: 70vh;
   margin: 0 auto;
   gap: 1.5rem;
   margin-bottom: 20px;
@@ -146,14 +146,20 @@
   border: 1px solid #ddd;
   margin-bottom: 1rem;
   border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   /* background-color: #f8f8f8; */
 }
 .event-name {
   font-size: 1.2rem;
   font-weight: bold;
+  width: 40%;
+  text-wrap: 1;
 }
 .event-status {
-  margin: 0.5rem 0;
+  
 }
 .event-actions {
   display: flex;

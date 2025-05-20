@@ -49,6 +49,7 @@ header, footer  {
 
 .headerHome ul {
   min-width: 30vw;
+  max-width: 90vw;
   display: flex;
   justify-content: space-between;
   align-items: center;

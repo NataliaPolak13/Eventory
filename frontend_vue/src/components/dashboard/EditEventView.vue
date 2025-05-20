@@ -34,6 +34,50 @@
 
       <hr />
 
+     <h3>Strategia otwartej rejestracji</h3>
+
+      <div>
+        <label>Start rejestracji</label>
+        <input
+          v-model="strategyForm.startDate"
+          type="datetime-local"
+          class="smallBorderBox"
+        />
+
+        <label>Koniec rejestracji</label>
+        <input
+          v-model="strategyForm.endDate"
+          type="datetime-local"
+          class="smallBorderBox"
+        />
+
+        <label>Widoczna od</label>
+        <input
+          v-model="strategyForm.visibleFrom"
+          type="datetime-local"
+          class="smallBorderBox"
+        />
+
+        <label>Widoczna do</label>
+        <input
+          v-model="strategyForm.visibleUntil"
+          type="datetime-local"
+          class="smallBorderBox"
+        />
+
+
+        <div v-if="strategy">
+          <button @click="updateStrategy" class="smallButton">Zaktualizuj strategię</button>
+          <input v-model="deleteStrategyReason" type="text" placeholder="Powód usunięcia" class="smallBorderBox" />
+          <button @click="deleteStrategy" class="dangerButton">Usuń strategię</button>
+        </div>
+        <div v-else>
+          <button @click="createStrategy" class="smallButton">Utwórz strategię</button>
+        </div>
+      </div>
+
+      <hr />
+
       <div>
         <h3>Usuń wydarzenie</h3>
         <input v-model="deleteReason" type="text" placeholder="Powód usunięcia" class="smallBorderBox" />
@@ -56,6 +100,7 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
+
     const event = ref({
       name: '',
       description: '',
@@ -66,7 +111,16 @@ export default {
       visibilityStartDate: '',
       visibilityEndDate: ''
     })
+
     const deleteReason = ref('')
+    const strategy = ref(null)
+    const strategyForm = ref({
+      startDate: '',
+      endDate: '',
+      visibleFrom: '',
+      visibleUntil: ''
+    })
+    const deleteStrategyReason = ref('')
 
     const fetchEvent = async () => {
       const res = await fetch(import.meta.env.VITE_API_URL + `/events/${route.params.id}`, {
@@ -89,6 +143,33 @@ export default {
         }
       } else {
         console.error('Nie udało się pobrać wydarzenia')
+      }
+    }
+
+    const fetchStrategy = async () => {
+      const stratRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/${route.params.id}/strategies`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+
+      if (stratRes.ok) {
+        const strategies = await stratRes.json();
+        // szukamy po isVisible zamiast visible
+        strategy.value = strategies.find(s => s.isVisible);
+
+        if (strategy.value) {
+          // wypełniamy formularz danych
+          strategyForm.value = {
+            startDate: strategy.value.startDate.slice(0, 16),
+            endDate: strategy.value.endDate.slice(0, 16),
+            visibleFrom: strategy.value.visibilityStartDate.slice(0, 16),
+            visibleUntil: strategy.value.visibilityEndDate.slice(0, 16)
+          };
+        }
       }
     }
 
@@ -133,19 +214,106 @@ export default {
       }
     }
 
+    const createStrategy = async () => {
+      const res = await fetch(import.meta.env.VITE_API_URL + `/events/participate/strategy/open`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify({
+          eventId: route.params.id,
+          ...strategyForm.value
+        })
+      })
+
+      if (res.ok) {
+        alert('Strategia utworzona')
+        fetchStrategy()
+      } else {
+        alert('Błąd przy tworzeniu strategii')
+      }
+    }
+
+    const updateStrategy = async () => {
+      if (!strategy.value) return;
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/events/participate/strategy/open/${strategy.value.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          },
+          body: JSON.stringify({
+            // składając body zgodnie z API
+            startDate: new Date(strategyForm.value.startDate).toISOString(),
+            endDate: new Date(strategyForm.value.endDate).toISOString(),
+            visibilityStartDate: new Date(strategyForm.value.visibleFrom).toISOString(),
+            visibilityEndDate: new Date(strategyForm.value.visibleUntil).toISOString()
+          })
+        }
+      );
+        console.log(res)
+      if (res.ok) {
+        alert('Zaktualizowano strategię');
+        fetchStrategy(); // odświeżamy dane
+      } else {
+        alert('Błąd przy aktualizacji strategii');
+      }
+    }
+
+    const deleteStrategy = async () => {
+      if (!strategy.value || !deleteStrategyReason.value.trim()) {
+        alert('Podaj powód usunięcia strategii')
+        return
+      }
+
+      const res = await fetch(import.meta.env.VITE_API_URL + `/events/participate/strategy/open/${strategy.value.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify({ reason: deleteStrategyReason.value })
+      })
+
+      if (res.ok) {
+        alert('Usunięto strategię')
+        strategy.value = null
+        strategyForm.value = {
+          startDate: '',
+          endDate: '',
+          visibleFrom: '',
+          visibleUntil: ''
+        }
+      } else {
+        alert('Nie udało się usunąć strategii')
+      }
+    }
+
     onMounted(() => {
       fetchEvent()
+      fetchStrategy()
     })
 
     return {
       event,
       deleteReason,
+      strategy,
+      strategyForm,
+      deleteStrategyReason,
       submitUpdate,
-      deleteEvent
+      deleteEvent,
+      createStrategy,
+      updateStrategy,
+      deleteStrategy
     }
   }
 }
 </script>
+
 
 <style scoped>
 label {
