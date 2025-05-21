@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <NavBarComponent />
     <div class="dashboard-main">
-      <h2 class="title">Twoje </h2>
+      <h2 class="title">Twoje dane</h2>
 
       <div class="card" v-if="user">
         <h2>Witaj {{ user.fullName }}</h2>
