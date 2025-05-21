@@ -70,16 +70,15 @@ export default {
 
     const checkJoinability = async (eventId, token) => {
       try {
-        const res1 = await fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}/participants`, {
+        const res1 = await fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}/strategies`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         const participantsData = await res1.json()
-        const openStrategy = participantsData.find(s => s.strategyType === 'open')
-        if (!openStrategy || openStrategy.list.length === 0) {
+        if (!participantsData || participantsData.length === 0) {
           joinable.value = false
           return
         }
-        strategyId.value = openStrategy.list[0].strategyId
+        strategyId.value = participantsData[0].id
 
         const res2 = await fetch(`${import.meta.env.VITE_API_URL}/events/participate/strategy/open/${strategyId.value}`, {
           headers: { Authorization: `Bearer ${token}` }

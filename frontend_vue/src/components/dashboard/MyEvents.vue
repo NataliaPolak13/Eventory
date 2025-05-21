@@ -126,20 +126,19 @@ export default {
 
     const checkJoinability = async (token, eventId) => {
       try {
-        const res1 = await fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}/participants`, {
+        const res1 = await fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}/strategies`, {
           headers: { Authorization: `Bearer ${token}` }
         })
 
-        if (!res1.ok) throw new Error(`Błąd przy pobieraniu participants: ${res1.status}`)
+        if (!res1.ok) throw new Error(`Błąd przy pobieraniu strategies: ${res1.status}`)
         const participantsData = await res1.json()
-        const openStrategy = participantsData.find(s => s.strategyType === 'open')
 
-        if (!openStrategy || openStrategy.list.length === 0) {
+        if (!participantsData || participantsData.length === 0) {
           joinability.value[eventId] = 'Zamknięte'
           return
         }
 
-        const strategyId = openStrategy.list[0].strategyId
+        const strategyId = participantsData[0].id
         const res2 = await fetch(`${import.meta.env.VITE_API_URL}/events/participate/strategy/open/${strategyId}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
