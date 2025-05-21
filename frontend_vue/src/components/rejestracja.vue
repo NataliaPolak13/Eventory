@@ -1,5 +1,8 @@
 <template>
   <div class="form-wrapper">
+        <div v-if="passwordErrors.length" class="error-box">
+        <p>{{ passwordErrors[0] }}</p>
+      </div>
     <div class="form-container">
       <div class="header">
         <h2>Zarejestruj się</h2>
@@ -38,20 +41,22 @@ export default {
       password: "",
       confirmPassword: "",
       profileImage: null,
+      passwordErrors: []
     };
   },
   methods: {
     async handleSubmit() {
+      this.passwordErrors = [];
+
       if (this.password !== this.confirmPassword) {
-        alert("Hasła nie pasują do siebie!");
+        this.passwordErrors = ["Hasła nie pasują do siebie"];
         return;
       }
 
       const adres = import.meta.env.VITE_API_URL;
 
-      // Tworzymy payload zgodny z wymaganiami backendu
       const payload = {
-        username: this.email.split('@')[0], // np. wyciągamy nazwę z maila
+        username: this.email.split('@')[0],
         firstname: this.firstName,
         lastname: this.lastName,
         email: this.email,
@@ -68,22 +73,28 @@ export default {
           },
           body: JSON.stringify(payload)
         });
+        const result = await response.json();
 
         if (!response.ok) {
-          // Spróbuj odebrać błąd z backendu
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Błąd podczas rejestracji.");
+          if (Array.isArray(result) && result.length > 0) {
+            this.passwordErrors = [result[0]]; 
+          } else if (Array.isArray(result.message)) {
+            this.passwordErrors = [result.message[0]];
+          } else if (typeof result.message === 'string') {
+            this.passwordErrors = [result.message];
+          } else {
+            this.passwordErrors = ['Wystąpił nieznany błąd.'];
+          }
+          return;
         }
 
-        const result = await response.json();
-        console.log("Odpowiedź z serwera:", result);
         alert("Rejestracja zakończona sukcesem! Potwierdź email.");
         localStorage.setItem("email", this.email);
         this.$router.push('/confirmEmail');
+
       } catch (error) {
         console.error(error);
-        console.log(error);
-        //alert("Nie udało się zarejestrować: " + error.message);
+        this.passwordErrors = ["Nie udało się połączyć z serwerem."];
       }
     },
 

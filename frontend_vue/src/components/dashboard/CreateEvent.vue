@@ -153,7 +153,7 @@ export default {
 .event-form button {
   width: fit-content;
   padding: 0.6rem 1.2rem;
-  background-color: #2563eb;
+  background-color: #216464;
   color: white;
   border: none;
   border-radius: 6px;
@@ -161,6 +161,6 @@ export default {
 }
 
 .event-form button:hover {
-  background-color: #1e40af;
+  background-color:rgb(22, 66, 66);
 }
 </style>

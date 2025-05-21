@@ -3,7 +3,7 @@
     <div class="header">
       <h2>Zapomniałeś hasła?</h2>
     </div>
-    <div class="loging-bar">
+    <form class="loging-bar" @submit.prevent="resetPassword">
       <div class="login-form">
         <div style="margin-bottom: 30px" class="input-group">
           <span class="icon">📧</span>
@@ -15,9 +15,9 @@
         </div>
       </div>
       <div class="button-container">
-        <button class="button1" @click="resetPassword" type="submit">Resetuj</button>
+        <button class="button1" type="submit">Resetuj</button>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -31,10 +31,15 @@ export default {
   },
   methods: {
     resetPassword() {
+      if (!this.email || !this.confirmEmail) {
+        alert('Proszę wpisać oba pola email.');
+        return;
+      }
+
       if (this.email === this.confirmEmail) {
         alert('Email został wysłany.');
       } else {
-        alert('Wprowadzone maile nie są zgodne!');
+        alert('Wprowadzone maile nie są takie same');
       }
     }
   }
@@ -42,4 +47,3 @@ export default {
 </script>
 
 <style src="../assets/reset_hasła.css"></style>
-
