@@ -1,7 +1,7 @@
 :root {
   --nav-color-option: #c9c9c9;
-  --nav-background-color: #c5c5c5;
-  --small-button-color: #2563eb;
+  --nav-background-color: #ccc;
+  --small-button-color: #b5b5b5;
   --background-color: #ccc:
 
 }
@@ -80,7 +80,7 @@
 }
 
 .nav-item:hover {
-  border-left: 3px solid #374cd4; /* akcent */
+  border-left: 3px solid #a0b0a4; /* akcent */
   color: #ffffff;
   filter: brightness(90%)
 }
@@ -158,9 +158,9 @@
   width: 40%;
   text-wrap: 1;
 }
-.event-status {
+/* .event-status {
   
-}
+} */
 .event-actions {
   display: flex;
   gap: 1rem;
@@ -175,7 +175,7 @@
   transition: background-color 0.3s ease;
 }
 .event-actions button:hover, .smallButton {
-  background-color: #1e40af;
+  background-color: #626268;
 }
 
 /* SEACH BAR */
