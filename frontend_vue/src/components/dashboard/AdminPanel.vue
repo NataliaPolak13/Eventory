@@ -1,37 +1,48 @@
 <template>
-  <div class="borderBox admin-panel" style="padding: 30px;">
-    <h1>Admin panel</h1>
-    <p v-if="loading">Ładowanie...</p>
-    <p v-if="error">{{ error }}</p>
 
-    <div v-if="!loading && !error">
-      <h2>Lista użytkowników</h2>
-      <ul class="user-list">
-        <li v-for="user in users" :key="user.id" class="user-item">
-          <div class="user-item-content">
-            <div class="user-data">
-                <strong>użytkownik:</strong> {{ user.fullName }} <strong>Username: </strong> {{ user.username }}
-            </div>
-            <div>
-              <button class="smallButton del" v-if="hasRole(user.id, 'user')" @click="changeRole(user.id, 'user', 'remove')">Odbierz rolę user</button>
-              <button class="smallButton" v-else @click="changeRole(user.id, 'user', 'add')">Dodaj rolę user</button>
+  <div class="dashboard-container">
+  
+  <NavBarComponent/>
+    <div class="dashboard-main borderBox">
+    
+      <div class="admin-panel" style="padding: 30px;">
+        
+        <h1>Admin panel</h1>
+        <p v-if="loading">Ładowanie...</p>
+        <p v-if="error">{{ error }}</p>
 
-              <button class="smallButton del" v-if="hasRole(user.id, 'event_creator')" @click="changeRole(user.id, 'event_creator', 'remove')">Odbierz rolę event_creator</button>
-              <button class="smallButton" v-else @click="changeRole(user.id, 'event_creator', 'add')">Dodaj rolę event_creator</button>
-            </div>
-          </div>
-        </li>
-      </ul>
+        <div v-if="!loading && !error">
+          <h2>Lista użytkowników</h2>
+          <ul class="user-list">
+            <li v-for="user in users" :key="user.id" class="user-item">
+              <div class="user-item-content">
+                <div class="user-data">
+                    <strong>użytkownik:</strong> {{ user.fullName }} <strong>Username: </strong> {{ user.username }}
+                </div>
+                <div>
+                  <button class="smallButton del" v-if="hasRole(user.id, 'user')" @click="changeRole(user.id, 'user', 'remove')">Odbierz rolę user</button>
+                  <button class="smallButton" v-else @click="changeRole(user.id, 'user', 'add')">Dodaj rolę user</button>
+
+                  <button class="smallButton del" v-if="hasRole(user.id, 'event_creator')" @click="changeRole(user.id, 'event_creator', 'remove')">Odbierz rolę event_creator</button>
+                  <button class="smallButton" v-else @click="changeRole(user.id, 'event_creator', 'add')">Dodaj rolę event_creator</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import NavBarComponent from './NavBarComponent.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'AdminPanel',
+  components: { NavBarComponent },
   setup() {
     const router = useRouter()
     const loading = ref(true)

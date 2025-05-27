@@ -9,7 +9,7 @@
         {{ errorMessage }}
       </div>
 
-      <form class="event-form" @submit.prevent="submitEvent">
+      <form v-if="hasPermission" class="event-form" @submit.prevent="submitEvent">
         <label>Nazwa wydarzenia:
           <input v-model="event.name" required />
         </label>
@@ -71,34 +71,53 @@ export default {
     })
 
     const errorMessage = ref('')
+    const hasPermission = ref(false)
 
-    const checkAuth = async () => {
+    const checkAuthAndRoles = async () => {
       const accessToken = localStorage.getItem('accessToken')
       if (!accessToken) {
         router.push('/logowanie')
-        return false
+        return
       }
 
-      const res = await fetch(import.meta.env.VITE_API_URL + '/auth/verify', {
+      // Sprawdzenie poprawności tokenu
+      const verifyRes = await fetch(import.meta.env.VITE_API_URL + '/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'access', token: accessToken })
       })
 
-      const data = await res.json()
-      if (!data.isValid) {
+      const verifyData = await verifyRes.json()
+      if (!verifyData.isValid) {
         router.push('/logowanie')
-        return false
+        return
       }
 
-      return true
+      // Pobranie ról
+      const rolesRes = await fetch(import.meta.env.VITE_API_URL + '/roles/me', {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      })
+
+      if (!rolesRes.ok) {
+        errorMessage.value = 'Błąd podczas pobierania ról.'
+        return
+      }
+
+      const roles = await rolesRes.json()
+      const roleNames = roles.map(r => r.name)
+      if (roleNames.includes('admin') || roleNames.includes('event_creator')) {
+        hasPermission.value = true
+      } else {
+        errorMessage.value = 'Brak odpowiedniej roli do tworzenia wydarzeń.'
+      }
     }
 
     const submitEvent = async () => {
       errorMessage.value = ''
-
-      const isAuth = await checkAuth()
-      if (!isAuth) return
+      if (!hasPermission.value) {
+        errorMessage.value = 'Brak odpowiedniej roli do tworzenia wydarzeń.'
+        return
+      }
 
       const payload = {
         name: event.value.name,
@@ -133,15 +152,17 @@ export default {
       }
     }
 
-    onMounted(checkAuth)
+    onMounted(checkAuthAndRoles)
 
     return {
       event,
       submitEvent,
-      errorMessage
+      errorMessage,
+      hasPermission
     }
   }
 }
+
 </script>
 
 <style scoped>
