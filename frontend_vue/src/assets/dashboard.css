@@ -1,8 +1,9 @@
 :root {
   --nav-color-option: #c9c9c9;
   --nav-background-color: #ccc;
-  --small-button-color: #b5b5b5;
+  --small-button-color: #2563eb;
   --background-color: #ccc:
+  --small-button-color: #2563eb;
 
 }
 
@@ -167,16 +168,17 @@
 }
 .event-actions button, .smallButton {
   padding: 0.5rem 1rem;
+  flex: 1;
   cursor: pointer;
-  background-color: var(--small-button-color);
+  background-color: #2563eb;
   color: white;
   border: none;
   border-radius: 6px;
   transition: background-color 0.3s ease;
 }
-.event-actions button:hover, .smallButton {
+/* .event-actions button:hover, .smallButton {
   background-color: #626268;
-}
+} */
 
 /* SEACH BAR */
 
@@ -193,4 +195,44 @@
 
 .search-bar button {
   padding: 0.5rem 1rem;
+}
+
+/* Admin Panel */
+
+.admin-panel {
+  min-width: 60%;
+  max-width: 100%;
+  margin-top: 1em;
+}
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+.user-item {
+    display: flex;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.user-item button {
+  margin-right: 0.5rem;
+}
+
+.user-item-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1em;
+}
+
+.del {
+  background-color: rgb(179, 41, 41);
+}
+
+.user-data {
+  display: flex;
+  gap: 2em;
 }

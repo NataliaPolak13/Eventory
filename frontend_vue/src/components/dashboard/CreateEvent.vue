@@ -3,6 +3,12 @@
     <NavBarComponent />
     <div class="dashboard-main borderBox">
       <h2>Utwórz nowe wydarzenie</h2>
+
+      <!-- Wyświetlanie błędu -->
+      <div v-if="errorMessage" class="error-box">
+        {{ errorMessage }}
+      </div>
+
       <form class="event-form" @submit.prevent="submitEvent">
         <label>Nazwa wydarzenia:
           <input v-model="event.name" required />
@@ -64,6 +70,8 @@ export default {
       visibleUntil: ''
     })
 
+    const errorMessage = ref('')
+
     const checkAuth = async () => {
       const accessToken = localStorage.getItem('accessToken')
       if (!accessToken) {
@@ -87,6 +95,8 @@ export default {
     }
 
     const submitEvent = async () => {
+      errorMessage.value = ''
+
       const isAuth = await checkAuth()
       if (!isAuth) return
 
@@ -101,19 +111,25 @@ export default {
         visibleUntil: new Date(event.value.visibleUntil).toISOString()
       }
 
-      const response = await fetch(import.meta.env.VITE_API_URL + '/events/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        },
-        body: JSON.stringify(payload)
-      })
+      try {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/events/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          },
+          body: JSON.stringify(payload)
+        })
 
-      if (response.ok) {
-        router.push('/dashboard/myEvents')
-      } else {
-        alert('Błąd przy tworzeniu wydarzenia')
+        if (response.ok) {
+          router.push('/dashboard/myEvents')
+        } else {
+          const errorData = await response.json()
+          errorMessage.value = errorData.message || 'Wystąpił błąd przy tworzeniu wydarzenia.'
+        }
+      } catch (e) {
+        console.error(e)
+        errorMessage.value = 'Nie udało się połączyć z serwerem.'
       }
     }
 
@@ -121,7 +137,8 @@ export default {
 
     return {
       event,
-      submitEvent
+      submitEvent,
+      errorMessage
     }
   }
 }
@@ -161,6 +178,15 @@ export default {
 }
 
 .event-form button:hover {
-  background-color:rgb(22, 66, 66);
+  background-color: rgb(22, 66, 66);
+}
+
+.error-box {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #a94442;
+  background-color: #f2dede;
+  color: #a94442;
+  border-radius: 6px;
 }
 </style>

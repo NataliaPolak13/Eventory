@@ -19,9 +19,13 @@
       <p>
         Ta sekcja pozwala Ci zarządzać wydarzeniami, w których już bierzesz udział. Możesz tutaj:
       </p>
+      <h3>Dla event crateors:</h3>
       <ul>
         <li>Tworzyć nowe wydarzenia,</li>
         <li>Edytować istniejące,</li>
+      </ul>
+      <h3>Dla wszystkich:</h3>
+      <ul>
         <li>Przeglądać szczegóły wydarzeń, których jesteś członkiem.</li>
       </ul>
     </div>

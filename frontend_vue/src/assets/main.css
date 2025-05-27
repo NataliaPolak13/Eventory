@@ -154,13 +154,11 @@ main {
     background-color: #5B7B7B;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 0.3em 0.7em;
     border-radius: 8px;
     box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    font-size: 30px;
-    width: 350px;
-    height: 73px;
+    font-size: 1.6em;
     box-shadow: 1px 2px 3px rgba(0,0,0,0.1);
 }
 
@@ -174,17 +172,6 @@ button:active {
 
 
 
-.header {
-    background-color: #5B7B7B;
-    padding-bottom: 20px;
-    text-align: center;
-    height: 110px;
-  }
-
-  .header h2 {
-    color: white;
-    background-color: transparent;
-    margin: 0;
-    font-size: 60px;
-    padding-top: 20px;
-  }
+strong {
+  font-weight: bold;
+}
