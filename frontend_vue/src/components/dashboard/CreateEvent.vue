@@ -3,7 +3,13 @@
     <NavBarComponent />
     <div class="dashboard-main borderBox">
       <h2>Utwórz nowe wydarzenie</h2>
-      <form class="event-form" @submit.prevent="submitEvent">
+
+      <!-- Wyświetlanie błędu -->
+      <div v-if="errorMessage" class="error-box">
+        {{ errorMessage }}
+      </div>
+
+      <form v-if="hasPermission" class="event-form" @submit.prevent="submitEvent">
         <label>Nazwa wydarzenia:
           <input v-model="event.name" required />
         </label>
@@ -64,31 +70,54 @@ export default {
       visibleUntil: ''
     })
 
-    const checkAuth = async () => {
+    const errorMessage = ref('')
+    const hasPermission = ref(false)
+
+    const checkAuthAndRoles = async () => {
       const accessToken = localStorage.getItem('accessToken')
       if (!accessToken) {
         router.push('/logowanie')
-        return false
+        return
       }
 
-      const res = await fetch(import.meta.env.VITE_API_URL + '/auth/verify', {
+      // Sprawdzenie poprawności tokenu
+      const verifyRes = await fetch(import.meta.env.VITE_API_URL + '/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'access', token: accessToken })
       })
 
-      const data = await res.json()
-      if (!data.isValid) {
+      const verifyData = await verifyRes.json()
+      if (!verifyData.isValid) {
         router.push('/logowanie')
-        return false
+        return
       }
 
-      return true
+      // Pobranie ról
+      const rolesRes = await fetch(import.meta.env.VITE_API_URL + '/roles/me', {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      })
+
+      if (!rolesRes.ok) {
+        errorMessage.value = 'Błąd podczas pobierania ról.'
+        return
+      }
+
+      const roles = await rolesRes.json()
+      const roleNames = roles.map(r => r.name)
+      if (roleNames.includes('admin') || roleNames.includes('event_creator')) {
+        hasPermission.value = true
+      } else {
+        errorMessage.value = 'Brak odpowiedniej roli do tworzenia wydarzeń.'
+      }
     }
 
     const submitEvent = async () => {
-      const isAuth = await checkAuth()
-      if (!isAuth) return
+      errorMessage.value = ''
+      if (!hasPermission.value) {
+        errorMessage.value = 'Brak odpowiedniej roli do tworzenia wydarzeń.'
+        return
+      }
 
       const payload = {
         name: event.value.name,
@@ -101,30 +130,39 @@ export default {
         visibleUntil: new Date(event.value.visibleUntil).toISOString()
       }
 
-      const response = await fetch(import.meta.env.VITE_API_URL + '/events/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        },
-        body: JSON.stringify(payload)
-      })
+      try {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/events/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          },
+          body: JSON.stringify(payload)
+        })
 
-      if (response.ok) {
-        router.push('/dashboard/myEvents')
-      } else {
-        alert('Błąd przy tworzeniu wydarzenia')
+        if (response.ok) {
+          router.push('/dashboard/myEvents')
+        } else {
+          const errorData = await response.json()
+          errorMessage.value = errorData.message || 'Wystąpił błąd przy tworzeniu wydarzenia.'
+        }
+      } catch (e) {
+        console.error(e)
+        errorMessage.value = 'Nie udało się połączyć z serwerem.'
       }
     }
 
-    onMounted(checkAuth)
+    onMounted(checkAuthAndRoles)
 
     return {
       event,
-      submitEvent
+      submitEvent,
+      errorMessage,
+      hasPermission
     }
   }
 }
+
 </script>
 
 <style scoped>
@@ -161,6 +199,15 @@ export default {
 }
 
 .event-form button:hover {
-  background-color:rgb(22, 66, 66);
+  background-color: rgb(22, 66, 66);
+}
+
+.error-box {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #a94442;
+  background-color: #f2dede;
+  color: #a94442;
+  border-radius: 6px;
 }
 </style>
