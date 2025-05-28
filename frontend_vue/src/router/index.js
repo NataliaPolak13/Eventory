@@ -74,9 +74,12 @@ const routes = [
   path: '/dashboard/editEvent/:id',
   name: 'EditEventView',
   component: () => import('../components/dashboard/EditEventView.vue')
-  }
-
-
+  },
+  {
+  path: '/dashboard/admin',
+  name: 'AdminPanel',
+  component: () => import('../components/dashboard/AdminPanel.vue')
+}
 
 ];
 

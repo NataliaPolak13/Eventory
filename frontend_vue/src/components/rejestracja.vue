@@ -88,7 +88,7 @@ export default {
           return;
         }
 
-        alert("Rejestracja zakończona sukcesem! Potwierdź email.");
+        // alert("Rejestracja zakończona sukcesem! Potwierdź email.");
         localStorage.setItem("email", this.email);
         this.$router.push('/confirmEmail');
 

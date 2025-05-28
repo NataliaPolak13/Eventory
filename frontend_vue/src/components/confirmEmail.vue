@@ -1,6 +1,14 @@
 <template>
   <div class="borderBox confirmEmail" style="padding: 30px;">
-    <h2>Wpisz kod weryfikacyjny mail</h2>
+    <h2>Wpisz kod weryfikacyjny oraz adres e-mail</h2>
+
+    <input
+      class="stdInput"
+      v-model="email"
+      type="email"
+      placeholder="Adres e-mail"
+      required
+    />
     <input
       class="stdInput"
       v-model="token"
@@ -8,6 +16,7 @@
       placeholder="Kod weryfikacyjny"
       required
     />
+
     <button class="stdButton" @click="confirmEmail">Potwierdź</button>
 
     <p v-if="message" style="margin-top: 20px;">{{ message }}</p>
@@ -21,19 +30,18 @@ import { useRouter } from 'vue-router'
 export default {
   name: 'ConfirmEmail',
   setup() {
+    const email = ref('')
     const token = ref('')
     const message = ref('')
     const router = useRouter()
 
     const confirmEmail = async () => {
-      const email = localStorage.getItem('email')
-
-      if (!email) {
-        message.value = 'Brak adresu email w localStorage.'
+      if (!email.value || !token.value) {
+        message.value = 'Podaj adres e-mail i kod weryfikacyjny.'
         return
       }
 
-      const url = import.meta.env.VITE_API_URL + `/email/confirm/${encodeURIComponent(email)}/${encodeURIComponent(token.value)}`
+      const url = `${import.meta.env.VITE_API_URL}/email/confirm/${encodeURIComponent(email.value)}/${encodeURIComponent(token.value)}`
 
       try {
         const response = await fetch(url)
@@ -49,6 +57,7 @@ export default {
     }
 
     return {
+      email,
       token,
       message,
       confirmEmail
