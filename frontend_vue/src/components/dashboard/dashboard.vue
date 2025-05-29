@@ -19,10 +19,11 @@
       <p>
         Ta sekcja pozwala Ci zarządzać wydarzeniami, w których już bierzesz udział. Możesz tutaj:
       </p>
-      <h3>Dla event crateors:</h3>
+      <h3>Dla twórców wydarzeń:</h3>
       <ul>
-        <li>Tworzyć nowe wydarzenia,</li>
-        <li>Edytować istniejące,</li>
+        <li>Tworzyć nowe wydarzenia</li>
+        <li>Edytować istniejące</li>
+        <li>Sprawdzać listę uczestników</li>
       </ul>
       <h3>Dla wszystkich:</h3>
       <ul>

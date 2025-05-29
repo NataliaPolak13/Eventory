@@ -27,7 +27,7 @@
             <h4>Uczestnicy:</h4>
             <ul>
               <li v-for="u in participantsList" :key="u.id">
-                {{ u.firstname }}, <!-- {{ u.lastname }} -->
+                {{ u.fullName }} ({{ u.username }})
               </li>
             </ul>
           </div>
@@ -126,6 +126,7 @@ export default {
         console.error(e)
         participantsList.value = []
       }
+      console.log('Participants fetched:', participantsList.value)
     }
 
     const register = async () => {

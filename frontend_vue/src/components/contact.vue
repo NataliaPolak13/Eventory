@@ -5,7 +5,7 @@
     <p>Projekt został zrealizowany przez zespół studentów kierunku <strong>Cyberbezpieczeństwo</strong>:</p>
     <ul class="student-list">
         <li>Natalia Polak</li>
-        <li>Kacper Janusz</li>
+        <li>Kacper Jahl</li>
         <li>Konrad Bąchór</li>
         <li>Mikołaj Klint</li>
         <li>Mikołaj Grodecki</li>

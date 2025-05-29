@@ -18,7 +18,7 @@
       <ul v-if="events.length > 0" class="event-list">
         <li v-for="event in events" :key="event.id" class="event-item">
           <h3 class="event-name">{{ event.name }}</h3>
-          <p><strong>Lokalizacja:</strong> {{ event.location }}, {{ event.locationDetails }}</p>
+          <p><strong>Lokalizacja:</strong> {{ event.location }}</p>
           <p><strong>Opis:</strong> {{ event.description }}</p>
           <p><strong>Data:</strong> {{ formatDate(event.startDate) }} - {{ formatDate(event.endDate) }}</p>
           <div class="event-actions">

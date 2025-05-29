@@ -15,7 +15,7 @@
         <input v-model="event.location" type="text" class="smallBorderBox" required />
 
         <label>Szczegóły lokalizacji</label>
-        <input v-model="event.locationDetails" type="text" class="smallBorderBox" required />
+        <textarea v-model="event.locationDetails" type="text" class="smallBorderBox" required></textarea>
 
         <label>Data rozpoczęcia</label>
         <input v-model="event.startDate" type="datetime-local" class="smallBorderBox" required />
@@ -29,7 +29,8 @@
         <label>Widoczność do</label>
         <input v-model="event.visibilityEndDate" type="datetime-local" class="smallBorderBox" required />
 
-        <button type="submit" class="smallButton" style="margin-left: 20px;">Zapisz zmiany</button>
+        <br>
+        <button type="submit" class="smallButton" style="margin-top: 10px;">Zapisz zmiany</button>
       </form>
 
       <hr />
@@ -67,9 +68,9 @@
 
 
         <div v-if="strategy">
-          <button @click="updateStrategy" class="smallButton">Zaktualizuj strategię</button>
+          <button @click="updateStrategy" style="margin-top: 10px;" class="smallButton">Zaktualizuj strategię</button> <br>
           <input v-model="deleteStrategyReason" type="text" placeholder="Powód usunięcia" class="smallBorderBox" />
-          <button @click="deleteStrategy" class="dangerButton">Usuń strategię</button>
+          <button @click="deleteStrategy" style="margin-left: 20px;" class="dangerButton">Usuń strategię</button>
         </div>
         <div v-else>
           <button @click="createStrategy" class="smallButton">Utwórz strategię</button>

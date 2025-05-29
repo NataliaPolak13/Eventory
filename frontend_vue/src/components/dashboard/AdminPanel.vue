@@ -17,14 +17,14 @@
             <li v-for="user in users" :key="user.id" class="user-item">
               <div class="user-item-content">
                 <div class="user-data">
-                    <strong>użytkownik:</strong> {{ user.fullName }} <strong>Username: </strong> {{ user.username }}
+                    <strong>Imie i nazwisko:</strong> {{ user.fullName }} <strong>Nazwa użytkownika: </strong> {{ user.username }}
                 </div>
                 <div>
-                  <button class="smallButton del" v-if="hasRole(user.id, 'user')" @click="changeRole(user.id, 'user', 'remove')">Odbierz rolę user</button>
-                  <button class="smallButton" v-else @click="changeRole(user.id, 'user', 'add')">Dodaj rolę user</button>
+                  <button class="smallButton del" v-if="hasRole(user.id, 'user')" @click="changeRole(user.id, 'user', 'remove')">Usuń rolę Użytkownika</button>
+                  <button class="smallButton" v-else @click="changeRole(user.id, 'user', 'add')">Dodaj rolę Użytkownika</button>
 
-                  <button class="smallButton del" v-if="hasRole(user.id, 'event_creator')" @click="changeRole(user.id, 'event_creator', 'remove')">Odbierz rolę event_creator</button>
-                  <button class="smallButton" v-else @click="changeRole(user.id, 'event_creator', 'add')">Dodaj rolę event_creator</button>
+                  <button class="smallButton del" v-if="hasRole(user.id, 'event_creator')" @click="changeRole(user.id, 'event_creator', 'remove')">Usuń rolę Event Creator</button>
+                  <button class="smallButton" v-else @click="changeRole(user.id, 'event_creator', 'add')">Dodaj rolę Event Creator</button>
                 </div>
               </div>
             </li>

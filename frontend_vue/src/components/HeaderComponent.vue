@@ -10,7 +10,7 @@
     </nav>
     <div class="user-actions">
       <template v-if="isLoggedIn">
-        <router-link to="/dashboard"><button class="home-button">Dashboard</button></router-link>
+        <router-link to="/dashboard"><button class="home-button">Dashboard [{{ loggedInAs }}]</button></router-link>
         <button class="home-button logout-button" @click="logout">Wyloguj</button>
       </template>
       <template v-else>
@@ -30,6 +30,7 @@ export default {
   name: 'HeaderComponent',
   setup() {
     const isLoggedIn = ref(false)
+    const loggedInAs = ref('')
     const router = useRouter()
 
     const checkLoginStatus = async () => {
@@ -47,9 +48,20 @@ export default {
           }
         })
         isLoggedIn.value = res.ok
+        if (isLoggedIn.value) {
+          const userData = await res.json()
+          console.log('Zalogowany użytkownik:', userData)
+          loggedInAs.value = userData.username || userData.email || 'Użytkownik'
+          emitter.emit('auth-change', true)
+        } else {
+          loggedInAs.value = ''
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
+        }
       } catch (err) {
         console.error('Błąd sprawdzania sesji:', err)
         isLoggedIn.value = false
+        loggedInAs.value = ''
       }
     }
 
@@ -76,7 +88,8 @@ export default {
 
     return {
       isLoggedIn,
-      logout
+      logout,
+      loggedInAs
     }
   }
 }

@@ -107,10 +107,6 @@
   background-color: #ddd;
 }
 
-.layer3 {
-
-}
-
 .title {
   font-size: 2rem;
   margin-bottom: 2rem;
@@ -164,8 +160,8 @@
 .event-name {
   font-size: 1.2rem;
   font-weight: bold;
-  width: 40%;
   text-wrap: 1;
+  padding-right: 10px;
 }
 /* .event-status {
   
@@ -240,6 +236,7 @@
 }
 
 .user-data {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 2em;
 }

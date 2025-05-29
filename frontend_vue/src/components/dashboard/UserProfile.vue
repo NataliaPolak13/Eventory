@@ -6,10 +6,10 @@
 
       <div class="card" v-if="user">
         <h2>Witaj {{ user.fullName }}</h2>
-        <p c><strong>Nazwa użytkownika:</strong> {{ user.username }}</p>
-        <p c><strong>Bio:</strong> {{ user.bio ?? 'Brak' }}</p>
-        <p c><strong>Numer kontaktowy:</strong> {{ user.contactNumber ?? 'Brak' }}</p>
-        <p c><strong>Data utworzenia konta:</strong> {{ formatDate(user.createdAt) }}</p>
+        <p><strong>Nazwa użytkownika:</strong> {{ user.username }}</p>
+        <p><strong>Bio:</strong> {{ user.bio ?? 'Brak' }}</p>
+        <p><strong>Numer kontaktowy:</strong> {{ user.contactNumber ?? 'Brak' }}</p>
+        <p><strong>Data utworzenia konta:</strong> {{ formatDate(user.createdAt) }}</p>
 
         <div class="event-actions" style="margin-top: 1.5rem;">
           <button @click="editProfile">Edytuj dane</button>
